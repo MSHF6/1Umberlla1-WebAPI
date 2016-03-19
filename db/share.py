@@ -9,15 +9,19 @@ class SharerRecord(SystemInfo):
 	__tablename__ = 'sharer_record'
 	# 同時作為 Shape 的路徑編號
 	id = db.Column(db.Integer, primary_key=True)
-	# 預設建立是開啟中 True
-	switch = db.Column(db.Boolean, default=True)
 	# 共享雨傘人
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 	# 時間部分由 SystemInfo 處理
 
+	# 使用者所在經緯度
+	location_lat = db.Column(db.Numeric(9, 6), nullable=True)
+	location_lng = db.Column(db.Numeric(9, 6), nullable=True)
+	# 預設建立是開啟中 False
+	switch = db.Column(db.Boolean, default=True)
+
 	# 虛擬關聯外鍵，多筆使用此雨傘資源的紀錄與人
 	using_resource_records = db.relationship(
-		'UsingShareRecord',
+		'UsedShareRecord',
 		backref='using_share_record'
 	)
 
@@ -26,8 +30,11 @@ class SharerRecord(SystemInfo):
 			setattr(self, k, v)
 
 	def __repr__(self):
-		print "<SharerRecord: id='%d', switch='%s', sharer_user_id='%d'>" % (
-			self.id, self.switch, self.description, self.sharer_user_id,
+		print "<SharerRecord: id='%d', \
+				switch='%s',location_lat='%s', location_lng='%s', \
+				sharer_user_id='%d'>" % (
+			self.id, self.switch, self.location_lat,
+			self.location_lng, self.sharer_user_id,
 		)
 
 
@@ -56,7 +63,7 @@ class UsedShareRecord(SystemInfo):
 			setattr(self, k, v)
 
 	def __repr__(self):
-		print "<UsingShareRecord: id='%d', used_user_id='%d', \
+		print "<UsedShareRecord: id='%d', used_user_id='%d', \
 				begin_location_lat='%s', \
 				begin_location_lng='%s', \
 				begin_address_description='%s', \

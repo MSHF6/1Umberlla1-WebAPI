@@ -29,13 +29,9 @@ def create_app(config):
 	# # # 安裝 Session 強化擴充
 	# # sess = Session()
 	# # sess.init_app(app)
-	# # 載入 view
-	# from app.web.client import client
-	# from app.web.deposit import deposit
-	# from app.web.donation import donation
-	# # 註冊藍圖
-	# app.register_blueprint(client)
-	# app.register_blueprint(deposit)
-	# app.register_blueprint(donation)
 
+	# Blueprint Resources
+	from resources import users, user_login
+	app.register_blueprint(users.blueprint, url_prefix='/api')
+	app.register_blueprint(user_login.blueprint, url_prefix='/api')
 	return app
