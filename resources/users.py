@@ -8,6 +8,7 @@ from resources.extension import aborts
 from resources.extension.fields import Unicode
 from db.repository.user import user_repository
 from resources.validators import user
+
 blueprint = Blueprint(
 	blueprints.USER_BP, __name__)
 
